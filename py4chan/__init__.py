@@ -18,7 +18,7 @@ from datetime import datetime
 _4CHAN_BOARDS_URL = 'boards.4chan.org'
 _4CHAN_API = 'a.4cdn.org'
 _4CHAN_IMAGES_URL = 'i.4cdn.org'
-_4CHAN_THUMBS_URL = 't.4cdn.org'
+_4CHAN_THUMBS_URL = '0.t.4cdn.org'
 
 #_4CHAN_BOARDS_URL = 'boards.4chan.org'
 #_4CHAN_API = 'api.4chan.org'
@@ -27,7 +27,7 @@ _4CHAN_THUMBS_URL = 't.4cdn.org'
 
 _BOARD = '%s/%i.json'
 _THREAD = '%s/res/%i.json'
-_VERSION = '0.2.1'
+_VERSION = '0.2.2'
 
 class Board(object):
     def __init__(self, boardName, https = False, apiUrl = _4CHAN_API, session = None):

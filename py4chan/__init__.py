@@ -12,10 +12,8 @@
 
 """
 
-# Using requests-transition to use older version of requests, 0.14, in the meantime
-import requests0 as requests
+import requests
 from datetime import datetime
-import base64
 
 _4CHAN_BOARDS_URL = 'boards.4chan.org'
 _4CHAN_API = 'a.4cdn.org'
@@ -29,14 +27,20 @@ _4CHAN_THUMBS_URL = 't.4cdn.org'
 
 _BOARD = '%s/%i.json'
 _THREAD = '%s/res/%i.json'
-_VERSION = '0.1.3'
+_VERSION = '0.2.1'
 
 class Board(object):
     def __init__(self, boardName, https = False, apiUrl = _4CHAN_API, session = None):
         self._https = https
         self._base_url = ('http://' if not https else 'https://') + apiUrl
         self._board_name = boardName
-        self._requests_session = session or requests.session(headers = {'User-Agent': 'py-4chan/%s' % _VERSION})
+        
+        # requests 1.x updated calls
+        self._requests_session = session or requests.session()
+        self._requests_session.headers = {'User-Agent': 'py-4chan/%s' % _VERSION}
+        # requests 0.14 vintage code
+#        self._requests_session = session or requests.session(headers = {'User-Agent': 'py-4chan/%s' % _VERSION})
+        
         self._thread_cache = {}
 
     def getThread(self, id, updateIfCached = True):
@@ -80,12 +84,12 @@ class Board(object):
             :return: list[Thread]
         """
         page -= 1
-        url = '%s/%s' % (self._base_url, _BOARD % (self._board_name,page))
+        url = '%s/%s' % (self._base_url, _BOARD % (self._board_name, page))
         res = self._requests_session.get(url)
         if res.status_code != 200:
             res.raise_for_status()
 
-        json = res.json
+        json = res.json()
         threads = []
         for thread_json in json['threads']:
             id = thread_json['posts'][0]['no']
@@ -110,6 +114,8 @@ class Board(object):
         """
         return self._board_name
 
+    def __repr__(self):
+        return '<Board /%s/>' % self.name
 
 class Thread(object):
     def __init__(self, board, id):
@@ -146,7 +152,7 @@ class Thread(object):
             return None
 
         elif res.status_code == 200:
-            return Thread._fromJson(res.json, board, id, res.headers['last-modified'])
+            return Thread._fromJson(res.json(), board, id, res.headers['last-modified'])
 
         else:
             res.raise_for_status()
@@ -184,7 +190,7 @@ class Thread(object):
 
     def Files(self):
         """
-            Returns a generator that yields all the URL of all the files (not thumbnails) in the thread.
+            Returns a generator that yields all the URLs of all the files (not thumbnails) in the thread.
         """
         yield self.topic.FileUrl
         for reply in self.replies:
@@ -193,7 +199,7 @@ class Thread(object):
 
     def Thumbs(self):
         """
-            Returns a generator that yields all the URL of all the thumbnails in the thread.
+            Returns a generator that yields all the URLs of all the thumbnails in the thread.
         """
         yield self.topic.ThumbnailUrl
         for reply in self.replies:
@@ -243,7 +249,7 @@ class Thread(object):
             self.omitted_posts = 0
 
             self._last_modified = res.headers['last-modified']
-            posts = res.json['posts']
+            posts = res.json()['posts']
 
             originalPostCount = len(self.replies)
             self.topic = Post(self, posts[0])
@@ -262,6 +268,20 @@ class Thread(object):
 
         else:
             res.raise_for_status()
+
+    @property
+    def AllPosts(self):
+        return [self.topic] + self.replies
+
+    @property
+    def ThreadUrl(self):
+        board = self._board
+        return "%s://%s/%s/res/%i" % (
+            'https' if board._https else 'http',
+            _4CHAN_BOARDS_URL,
+            board.Name,
+            self.id
+        )
 
     def __repr__(self):
         extra = ""
@@ -292,27 +312,27 @@ class Post(object):
         """
             :return: int
         """
-        return self._data.get('id')
+        return self._data.get('id')     # dict.get() returns None if not found
 
     @property
     def Name(self):
-        return self._data.get('name', None)
+        return self._data.get('name')
 
     @property
     def EMail(self):
-        return self._data.get('email', None)
+        return self._data.get('email')
 
     @property
     def Tripcode(self):
-        return self._data.get('tripcode', None)
+        return self._data.get('tripcode')
 
     @property
     def Subject(self):
-        return self._data.get('sub', None)
+        return self._data.get('sub')
     
     @property
     def Comment(self):
-        return self._data.get('com', None)
+        return self._data.get('com')
 
     @property
     def Timestamp(self):
@@ -327,7 +347,7 @@ class Post(object):
         if not self.HasFile:
             return None
 
-        return base64.b64decode(self._data['md5'])
+        return self._data['md5'].decode('base64')
 
     @property
     def FileMd5Hex(self):
@@ -353,19 +373,19 @@ class Post(object):
     
     @property
     def FileExtension(self):
-        return self._data.get('ext', None)
+        return self._data.get('ext')
 
     @property
     def FileSize(self):
-        return self._data.get('fsize', None)
+        return self._data.get('fsize')
     
     @property
     def FileWidth(self):
-        return self._data.get('w', None)
+        return self._data.get('w')
     
     @property
     def FileHeight(self):
-        return self._data.get('h', None)
+        return self._data.get('h')
 
     @property
     def FileDeleted(self):
@@ -373,11 +393,11 @@ class Post(object):
 
     @property
     def ThumbnailWidth(self):
-        return self._data.get('tn_w', None)
+        return self._data.get('tn_w')
 
     @property
     def ThumbnailHeight(self):
-        return self._data.get('tn_h', None)
+        return self._data.get('tn_h')
 
     @property
     def ThumbnailUrl(self):

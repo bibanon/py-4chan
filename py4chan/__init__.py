@@ -115,7 +115,7 @@ class Board(object):
         return self._board_name
 
     def __repr__(self):
-        return '<Board /%s/>' % self.name
+        return '<Board /%s/>' % self.Name
 
 class Thread(object):
     def __init__(self, board, id):

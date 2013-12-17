@@ -144,7 +144,7 @@ class Thread(object):
             Is the thread sticky?
             :return: bool
         """
-        return self.topic._data('sticky', 0) == 1
+        return self.topic._data.get('sticky', 0) == 1
 
     @staticmethod
     def _fromRequest(board, res, id):

@@ -136,7 +136,7 @@ class Thread(object):
             Is the thread closed?
             :return: bool
         """
-        return self.topic._data['closed'] == 1
+        return self.topic._data.get('closed', 0) == 1
 
     @property
     def Sticky(self):
@@ -144,7 +144,7 @@ class Thread(object):
             Is the thread sticky?
             :return: bool
         """
-        return self.topic._data['sticky'] == 1
+        return self.topic._data('sticky', 0) == 1
 
     @staticmethod
     def _fromRequest(board, res, id):

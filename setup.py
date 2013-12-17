@@ -24,10 +24,10 @@ _VERSION = '0.2.2'
 
 setup(name='py-4chan',
     version=_VERSION,
-    description='Python 4chan API Wrapper',
+    description='Python 4chan API Wrapper. Modded by the Bibliotheca Anonoma to support the BA 4chan-thread-archiver',
     author='Edgeworth Euler',
     author_email='e@encyclopediadramatica.se',
-    url='http://github.com/e000/py-4chan',
+    url='http://github.com/bibanon/py-4chan',
     license="http://sam.zoy.org/wtfpl/COPYING",
     packages=['py4chan'],
     install_requires = ['requests >= 1.0.0']

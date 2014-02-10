@@ -27,7 +27,7 @@ _4CHAN_THUMBS_URL = '0.t.4cdn.org'
 
 _BOARD = '%s/%i.json'
 _THREAD = '%s/res/%i.json'
-_VERSION = '0.2.3'
+_VERSION = '0.2.4'
 
 class Board(object):
     def __init__(self, boardName, https = False, apiUrl = _4CHAN_API, session = None):

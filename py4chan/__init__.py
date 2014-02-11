@@ -27,7 +27,7 @@ _4CHAN_THUMBS_URL = '0.t.4cdn.org'
 
 _BOARD = '%s/%i.json'
 _THREAD = '%s/res/%i.json'
-_VERSION = '0.2.2'
+_VERSION = '0.2.3'
 
 class Board(object):
     def __init__(self, boardName, https = False, apiUrl = _4CHAN_API, session = None):
@@ -136,7 +136,10 @@ class Thread(object):
             Is the thread closed?
             :return: bool
         """
-        return self.topic._data.get('closed', 0) == 1
+        try:
+            return self.topic.data['closed'] == 1
+        except KeyError:
+            return False
 
     @property
     def Sticky(self):
@@ -144,7 +147,10 @@ class Thread(object):
             Is the thread sticky?
             :return: bool
         """
-        return self.topic._data.get('sticky', 0) == 1
+        try:
+            return self.topic.data['sticky'] == 1
+        except KeyError:
+            return False
 
     @staticmethod
     def _fromRequest(board, res, id):
@@ -329,6 +335,12 @@ class Post(object):
     @property
     def Subject(self):
         return self._data.get('sub')
+
+#  spaghetti's alternate fix
+#        try:
+#            return self._data['sub']
+#        except KeyError:
+#            return None
     
     @property
     def Comment(self):

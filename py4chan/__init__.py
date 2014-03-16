@@ -137,7 +137,7 @@ class Thread(object):
             :return: bool
         """
         try:
-            return self.topic.data['closed'] == 1
+            return self.topic._data['closed'] == 1
         except KeyError:
             return False
 
@@ -148,7 +148,7 @@ class Thread(object):
             :return: bool
         """
         try:
-            return self.topic.data['sticky'] == 1
+            return self.topic._data['sticky'] == 1
         except KeyError:
             return False
 

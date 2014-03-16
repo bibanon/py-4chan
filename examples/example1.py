@@ -20,8 +20,8 @@ def main():
     print 'Comment',    topic.Comment
     print 'ThumbnailUrl',topic.ThumbnailUrl
     print 'Replies',    thread.replies
-    print 'AllPosts'    thread.AllPosts
-    print 'ThreadUrl'   thread.ThreadUrl
+    print 'AllPosts',    thread.AllPosts
+    print 'ThreadUrl',  thread.ThreadUrl
 
 if __name__ == '__main__':
     main()

@@ -29,7 +29,7 @@ _4CHAN_THUMBS_URL = '0.t.4cdn.org'
 
 _BOARD = '%s/%i.json'
 _THREAD = '%s/res/%i.json'
-_VERSION = '0.2.6'
+_VERSION = '0.2.7'
 
 class Board(object):
     def __init__(self, boardName, https = False, apiUrl = _4CHAN_API, session = None):
@@ -368,7 +368,7 @@ class Post(object):
         if not self.HasFile:
             return None
 
-        return binascii.hexlify(self.FileMd5)
+        return binascii.hexlify(self.FileMd5).decode('utf-8')
 
     @property
     def FileUrl(self):

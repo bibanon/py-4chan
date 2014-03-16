@@ -13,6 +13,8 @@
 """
 
 import requests
+import base64
+import binascii
 from datetime import datetime
 
 _4CHAN_BOARDS_URL = 'boards.4chan.org'
@@ -359,14 +361,14 @@ class Post(object):
         if not self.HasFile:
             return None
 
-        return self._data['md5'].decode('base64')
+        return base64.b64decode(self._data['md5'])
 
     @property
     def FileMd5Hex(self):
         if not self.HasFile:
             return None
 
-        return self.FileMd5.encode('hex')
+        return binascii.hexlify(self.FileMd5)
 
     @property
     def FileUrl(self):

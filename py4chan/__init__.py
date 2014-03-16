@@ -36,13 +36,10 @@ class Board(object):
         self._https = https
         self._base_url = ('http://' if not https else 'https://') + apiUrl
         self._board_name = boardName
-        
-        # requests 1.x updated calls
+
         self._requests_session = session or requests.session()
         self._requests_session.headers = {'User-Agent': 'py-4chan/%s' % _VERSION}
-        # requests 0.14 vintage code
-#        self._requests_session = session or requests.session(headers = {'User-Agent': 'py-4chan/%s' % _VERSION})
-        
+
         self._thread_cache = {}
 
     def getThread(self, id, updateIfCached = True):
@@ -376,7 +373,7 @@ class Post(object):
             return None
 
         board = self._thread._board
-        
+
         return '%s://%s/%s/src/%i%s' % (
             'https' if board._https else 'http',
             _4CHAN_IMAGES_URL,

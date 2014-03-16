@@ -16,7 +16,7 @@
 
 from setuptools import setup
 #from py4chan import _VERSION		# Causes issues with requests-transition, when requests is not already installed. Use workaround
-_VERSION = '0.2.4'
+_VERSION = '0.2.5'
 
 # Use requirements.txt file for dependencies
 # Disabled, because it doesn't work with PyPi

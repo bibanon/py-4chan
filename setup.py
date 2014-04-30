@@ -17,9 +17,14 @@
 from setuptools import setup
 from py4chan import _VERSION
 
+with open('README.rst') as file:
+  long_description = file.read()
+
 setup(name='py-4chan',
     version=_VERSION,
     description='Python 4chan API Wrapper. Modded by the Bibliotheca Anonoma to support the BA 4chan-thread-archiver',
+    long_description = long_description, 
+    license=open('LICENSE').read(),
     author='Edgeworth Euler',
     author_email='e@encyclopediadramatica.se',
     url='http://github.com/bibanon/py-4chan',

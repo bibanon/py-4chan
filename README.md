@@ -1,3 +1,8 @@
+> **Notice:** - **Please migrate to the new and improved [BASC-py4chan](https://github.com/bibanon/BASC-py4chan) wrapper**, it has many improvements and new features (such as catalog support.)
+
+py-4chan has entered legacy support, meaning that no new features will be added. However, the [Bibliotheca Anonoma ](https://github.com/bibanon/bibanon/wiki) will ensure that py-4chan will work as long as we possibly can, to ensure that legacy API dumping apps still work.
+
+
 py-4chan
 ========
 

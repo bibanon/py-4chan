@@ -197,7 +197,8 @@ class Thread(object):
         """
             Returns a generator that yields all the URLs of all the files (not thumbnails) in the thread.
         """
-        yield self.topic.FileUrl
+        if self.topic.HasFile:
+            yield self.topic.FileUrl
         for reply in self.replies:
             if reply.HasFile:
                 yield reply.FileUrl
@@ -206,7 +207,8 @@ class Thread(object):
         """
             Returns a generator that yields all the URLs of all the thumbnails in the thread.
         """
-        yield self.topic.ThumbnailUrl
+        if self.topic.HasFile:
+            yield self.topic.ThumbnailUrl
         for reply in self.replies:
             if reply.HasFile:
                 yield reply.ThumbnailUrl
@@ -310,7 +312,7 @@ class Post(object):
         """
             :return: int
         """
-        return self._data['no']
+        return self._data.get('no')     # dict.get() returns None if not found
 
     @property
     def Id(self):

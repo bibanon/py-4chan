@@ -28,7 +28,6 @@ setup(name='py-4chan',
     author='Edgeworth Euler',
     author_email='e@encyclopediadramatica.se',
     url='http://github.com/bibanon/py-4chan',
-    license="http://sam.zoy.org/wtfpl/COPYING",
     packages=['py4chan'],
     install_requires = ['requests >= 1.0.0']
 )
